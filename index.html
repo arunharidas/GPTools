@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Personalized Bookmarks</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom font */
+        body {
+            font-family: "Inter", sans-serif;
+            background-color: #f3f4f6; /* Light gray background */
+        }
+        /* Custom scrollbar for a cleaner look */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+        /* Gradient text for the main heading (black variation) */
+        .gradient-text {
+            background-image: linear-gradient(to right, #212121, #424242); /* Dark gray to a slightly lighter gray */
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent; /* Make text transparent to show gradient */
+        }
+        /* Modal styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            visibility: hidden;
+            opacity: 0;
+            transition: visibility 0s, opacity 0.3s ease-in-out;
+        }
+        .modal-overlay.show {
+            visibility: visible;
+            opacity: 1;
+        }
+        .modal-content {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 0.75rem; /* rounded-xl */
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1); /* shadow-lg */
+            width: 90%;
+            max-width: 600px; /* Increased max-width for tools content */
+            max-height: 90vh; /* Limit height for scrollable content */
+            overflow-y: auto; /* Enable scrolling for long content */
+            transform: translateY(-20px);
+            transition: transform 0.3s ease-in-out;
+            position: relative; /* For close button positioning */
+        }
+        .modal-overlay.show .modal-content {
+            transform: translateY(0);
+        }
+
+        /* Blinking animation for the link */
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .blink-animation {
+            animation: blink 1s infinite alternate; /* 1s duration, infinite, alternates between 0.5 and 1 opacity */
+        }
+
+        /* No auto-hide specific CSS needed anymore for these sections */
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center py-8 px-4 sm:px-6 lg:px-8">
+    <div class="w-full max-w-5xl mx-auto relative">
+        <!-- Top Right Links -->
+        <div class="absolute top-0 right-4 flex space-x-4 text-sm font-medium py-4">
+            <a href="https://mail.google.com/" class="text-gray-600 hover:text-blue-500 transition-colors duration-200">Gmail</a>
+            <a href="https://calendar.google.com/" class="text-gray-600 hover:text-blue-500 transition-colors duration-200">Calendar</a>
+            <a href="#" id="makeHomepageLink" class="text-blue-700 hover:text-blue-800 font-bold px-3 py-1 rounded-full bg-blue-100 hover:bg-blue-200 transition-colors duration-200">Change to your own homepage</a>
+        </div>
+
+        <!-- Search Box Section -->
+        <div class="mb-12 mt-32">
+            <!-- Heading and Edit Button Container -->
+            <div class="flex items-center justify-center mb-6 group relative">
+                <h1 id="mainHeading" class="text-4xl sm:text-5xl font-extrabold text-center tracking-wide drop-shadow-lg gradient-text mr-4">GPTOOLS 3.0</h1>
+                <button id="editHeadingBtn" class="absolute right-0 p-1 rounded-full bg-gray-200 hover:bg-gray-300 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-gray-400
+                                                    opacity-0 invisible group-hover:opacity-100 group-hover:visible">
+                    <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+                    </svg>
+                </button>
+            </div>
+            <div class="relative flex items-center">
+                <input
+                    type="search"
+                    placeholder="Search the web..."
+                    class="w-full pl-12 pr-4 py-3 rounded-full border-2 border-gray-300 focus:border-blue-500 focus:ring-blue-500 outline-none shadow-lg transition-all duration-300 text-lg"
+                    onkeydown="if(event.key === 'Enter') window.open('https://www.google.com/search?q=' + this.value);"
+                >
+                <!-- Search Icon (SVG) -->
+                <svg class="absolute left-4 text-gray-500 w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                </svg>
+            </div>
+        </div>
+
+        <!-- Custom Buttons Section (after search box) -->
+        <div class="mb-12 flex flex-wrap justify-center gap-4">
+            <button class="px-6 py-2 bg-green-50 text-green-700 font-medium rounded hover:bg-green-100 transition-colors duration-150 text-base border border-green-100 shadow-sm">
+                Service Type
+            </button>
+            <button class="px-6 py-2 bg-green-50 text-green-700 font-medium rounded hover:bg-green-100 transition-colors duration-150 text-base border border-green-100 shadow-sm">
+                Mandatory Documents
+            </button>
+            <button class="px-6 py-2 bg-green-50 text-green-700 font-medium rounded hover:bg-green-100 transition-colors duration-150 text-base border border-green-100 shadow-sm">
+                Account Heads
+            </button>
+            <button class="px-6 py-2 bg-green-50 text-green-700 font-medium rounded hover:bg-green-100 transition-colors duration-150 text-base border border-green-100 shadow-sm">
+                Business Master
+            </button>
+        </div>
+
+        <!-- Main Bookmarks Section (4 Columns) -->
+        <div class="mb-12">
+            <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                <!-- Bookmark Card 1 (KSmart) -->
+                <a href="https://ksmart.lsgkerala.gov.in/" class="flex flex-col items-center justify-center p-6 bg-white rounded-xl shadow-md hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300 cursor-pointer">
+                    <!-- Updated to use an img tag for the K-SMART logo -->
+                    <div class="mb-3 w-20 h-20 flex items-center justify-center overflow-hidden rounded-full">
+                        <img src="https://cdn.office.ikm.gov.in/common/webpage/news/EverythingK-SMART.webp"
+                             alt="K-SMART Logo"
+                             class="w-full h-full object-cover rounded-full"
+                             onerror="this.onerror=null; this.src='https://placehold.co/80x80/cccccc/333333?text=K-SMART';"
+                        >
+                    </div>
+                    <span class="text-lg font-medium text-gray-800">KSmart</span>
+                </a>
+                <!-- Bookmark Card 2 (Sulekha) -->
+                <a href="https://plan.lsgkerala.gov.in/" class="flex flex-col items-center justify-center p-6 bg-white rounded-xl shadow-md hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300 cursor-pointer">
+                    <div class="bg-green-500 p-3 rounded-full mb-3">
+                        <!-- Generic document/plan icon for Sulekha -->
+                        <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8zm-2 18H8v-2h4v2zm0-4H8v-2h4v2zm3-7V4.5L18.5 9H15z"></path>
+                        </svg>
+                    </div>
+                    <span class="text-lg font-medium text-gray-800">Sulekha</span>
+                </a>
+                <!-- Bookmark Card 3 -->
+                <a href="https://www.youtube.com/" class="flex flex-col items-center justify-center p-6 bg-white rounded-xl shadow-md hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300 cursor-pointer">
+                    <div class="bg-red-600 p-3 rounded-full mb-3">
+                        <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M10 16.5l6-4.5-6-4.5v9z"></path>
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"></path>
+                        </svg>
+                    </div>
+                    <span class="text-lg font-medium text-gray-800">YouTube</span>
+                </a>
+                <!-- Bookmark Card 4 -->
+                <a href="https://github.com/" class="flex flex-col items-center justify-center p-6 bg-white rounded-xl shadow-md hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300 cursor-pointer">
+                    <div class="bg-gray-800 p-3 rounded-full mb-3">
+                        <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.17 6.839 9.49.5.09.682-.217.682-.483 0-.237-.008-.867-.013-1.7-2.782.603-3.37-1.34-3.37-1.34-.454-1.156-1.107-1.463-1.107-1.463-.907-.618.069-.606.069-.606 1.004.07 1.532 1.03 1.532 1.03.89 1.528 2.336 1.087 2.902.83.09-.645.349-1.087.634-1.337-2.22-.253-4.555-1.11-4.555-4.945 0-1.09.39-1.984 1.029-2.682-.103-.253-.446-1.27.098-2.65S11.5 5 12 5c.538 0 2.684.72 3.22 2.004.544 1.38.202 2.397.098 2.65.64.698 1.029 1.592 1.029 2.682 0 3.843-2.339 4.688-4.566 4.935.359.309.678.92.678 1.854 0 1.337-.012 2.417-.012 2.747 0 .268.18.578.688.48C19.137 20.166 22 16.42 22 12c0-5.523-4.477-10-10-10z" clip-rule="evenodd"></path>
+                        </svg>
+                    </div>
+                    <span class="text-lg font-medium text-gray-800">GitHub</span>
+                </a>
+                <!-- Add more main bookmark cards here if needed -->
+            </div>
+        </div>
+
+        <!-- Buttons to open Web Tools and Download Softwares modals -->
+        <div class="w-full max-w-5xl mx-auto mt-12 flex justify-center space-x-4">
+            <button id="openWebToolsBtn" class="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-200 text-lg">Web Tools</button>
+            <button id="openSoftwaresBtn" class="px-6 py-3 bg-green-600 text-white font-semibold rounded-lg shadow-md hover:bg-green-700 transition-colors duration-200 text-lg">Download Softwares</button>
+        </div>
+
+        <!-- Web Tools Modal -->
+        <div id="webToolsModalOverlay" class="modal-overlay">
+            <div class="modal-content">
+                <button id="closeWebToolsModalBtn" class="absolute top-4 right-4 text-gray-600 hover:text-gray-900 text-2xl font-bold">&times;</button>
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">Web Tools</h2>
+                <!-- Productivity Tools -->
+                <div class="mb-4">
+                    <h3 class="text-base font-semibold text-gray-700 mb-2">Productivity</h3>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+                        <a href="https://keep.google.com/" class="flex items-center p-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors duration-200" title="Google Keep">
+                            <span class="text-sm text-gray-800">Google Keep</span>
+                        </a>
+                        <a href="https://todoist.com/" class="flex items-center p-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors duration-200" title="Todoist">
+                            <span class="text-sm text-gray-800">Todoist</span>
+                        </a>
+                        <a href="https://evernote.com/" class="flex items-center p-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors duration-200" title="Evernote">
+                            <span class="text-sm text-gray-800">Evernote</span>
+                        </a>
+                        <a href="https://www.grammarly.com/" class="flex items-center p-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors duration-200" title="Grammarly">
+                            <span class="text-sm text-gray-800">Grammarly</span>
+                        </a>
+                        <a href="https://www.lastpass.com/" class="flex items-center p-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors duration-200" title="LastPass">
+                            <span class="text-sm text-gray-800">LastPass</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Development Tools -->
+                <div class="mb-4">
+                    <h3 class="text-base font-semibold text-gray-700 mb-2">Development</h3>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+                        <a href="https://codepen.io/" class="flex items-center p-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors duration-200" title="CodePen">
+                            <span class="text-sm text-gray-800">CodePen</span>
+                        </a>
+                        <a href="https://jsfiddle.net/" class="flex items-center p-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors duration-200" title="JSFiddle">
+                            <span class="text-sm text-gray-800">JSFiddle</span>
+                        </a>
+                        <a href="https://stackoverflow.com/" class="flex items-center p-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors duration-200" title="Stack Overflow">
+                            <span class="text-sm text-gray-800">Stack Overflow</span>
+                        </a>
+                        <a href="https://developer.mozilla.org/en-US/" class="flex items-center p-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors duration-200" title="MDN Web Docs">
+                            <span class="text-sm text-gray-800">MDN Web Docs</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Design Tools -->
+                <div>
+                    <h3 class="text-base font-semibold text-gray-700 mb-2">Design</h3>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+                        <a href="https://www.figma.com/" class="flex items-center p-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors duration-200" title="Figma">
+                            <span class="text-sm text-gray-800">Figma</span>
+                        </a>
+                        <a href="https://www.canva.com/" class="flex items-center p-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors duration-200" title="Canva">
+                            <span class="text-sm text-gray-800">Canva</span>
+                        </a>
+                        <a href="https://unsplash.com/" class="flex items-center p-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors duration-200" title="Unsplash">
+                            <span class="text-sm text-gray-800">Unsplash</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Download Softwares Modal -->
+        <div id="softwaresModalOverlay" class="modal-overlay">
+            <div class="modal-content">
+                <button id="closeSoftwaresModalBtn" class="absolute top-4 right-4 text-gray-600 hover:text-gray-900 text-2xl font-bold">&times;</button>
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">Download Softwares</h2>
+                <!-- Graphic Editing Category -->
+                <div class="mb-6">
+                    <h3 class="text-base font-semibold text-gray-700 mb-2">Graphic Editing</h3>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+                        <a href="https://www.gimp.org/" class="flex items-center p-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors duration-200" title="GIMP">
+                            <span class="text-sm text-gray-800">GIMP</span>
+                        </a>
+                        <a href="https://krita.org/" class="flex items-center p-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors duration-200" title="Krita">
+                            <span class="text-sm text-gray-800">Krita</span>
+                        </a>
+                        <a href="https://www.darktable.org/" class="flex items-center p-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors duration-200" title="Darktable">
+                            <span class="text-sm text-gray-800">Darktable</span>
+                        </a>
+                        <a href="https://www.getpaint.net/" class="flex items-center p-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors duration-200" title="Paint.net">
+                            <span class="text-sm text-gray-800">Paint.net</span>
+                        </a>
+                    </div>
+                </div>
+                <!-- Office Category -->
+                <div class="mb-6">
+                    <h3 class="text-base font-semibold text-gray-700 mb-2">Office</h3>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+                        <a href="https://www.microsoft.com/en-us/microsoft-365/get-started-with-office-2021" class="flex items-center p-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors duration-200" title="MS Office">
+                            <span class="text-sm text-gray-800">MS Office</span>
+                        </a>
+                        <a href="https://www.libreoffice.org/download/download/" class="flex items-center p-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors duration-200" title="Libre Office">
+                            <span class="text-sm text-gray-800">Libre Office</span>
+                        </a>
+                        <a href="https://www.onlyoffice.com/download-desktop.aspx" class="flex items-center p-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors duration-200" title="Only Office">
+                            <span class="text-sm text-gray-800">Only Office</span>
+                        </a>
+                    </div>
+                </div>
+                <!-- Operating Systems Category -->
+                <div>
+                    <h3 class="text-base font-semibold text-gray-700 mb-2">Operating Systems</h3>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+                        <a href="https://www.microsoft.com/en-us/software-download/windows10" class="flex items-center p-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors duration-200" title="Windows 10">
+                            <span class="text-sm text-gray-800">Windows 10</span>
+                        </a>
+                        <a href="https://www.microsoft.com/en-us/software-download/windows11" class="flex items-center p-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors duration-200" title="Windows 11">
+                            <span class="text-sm text-gray-800">Windows 11</span>
+                        </a>
+                        <a href="https://ubuntu.com/download" class="flex items-center p-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors duration-200" title="Ubuntu">
+                            <span class="text-sm text-gray-800">Ubuntu</span>
+                        </a>
+                        <a href="https://getfedora.org/" class="flex items-center p-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors duration-200" title="Fedora">
+                            <span class="text-sm text-gray-800">Fedora</span>
+                        </a>
+                        <a href="https://www.debian.org/distrib/" class="flex items-center p-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors duration-200" title="Debian">
+                            <span class="text-sm text-gray-800">Debian</span>
+                        </a>
+                        <a href="https://www.bosslinux.in/downloads/" class="flex items-center p-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors duration-200" title="Boss Linux">
+                            <span class="text-sm text-gray-800">Boss Linux</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Heading Modal -->
+    <div id="editModalOverlay" class="modal-overlay">
+        <div class="modal-content">
+            <button id="closeEditModalBtn" class="absolute top-4 right-4 text-gray-600 hover:text-gray-900 text-2xl font-bold">&times;</button>
+            <h3 class="text-xl font-semibold mb-4 text-gray-800">Edit Heading</h3>
+            <input
+                type="text"
+                id="headingInput"
+                class="w-full p-3 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Enter new heading text"
+            >
+            <div class="flex justify-end space-x-3">
+                <button id="cancelEditBtn" class="px-4 py-2 bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400 transition-colors duration-200">Cancel</button>
+                <button id="saveEditBtn" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors duration-200">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="w-full max-w-5xl mx-auto mt-12 py-4 text-center text-gray-500 text-sm">
+        <span>Created by Arun Haridas, Technical Assistant, Marangattupilly Gramapanchayat</span>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const mainHeading = document.getElementById('mainHeading');
+            const editHeadingBtn = document.getElementById('editHeadingBtn');
+            const editModalOverlay = document.getElementById('editModalOverlay');
+            const headingInput = document.getElementById('headingInput');
+            const saveEditBtn = document.getElementById('saveEditBtn');
+            const cancelEditBtn = document.getElementById('cancelEditBtn');
+            const makeHomepageLink = document.getElementById('makeHomepageLink');
+
+            // New elements for Web Tools and Softwares modals
+            const openWebToolsBtn = document.getElementById('openWebToolsBtn');
+            const webToolsModalOverlay = document.getElementById('webToolsModalOverlay');
+            const closeWebToolsModalBtn = document.getElementById('closeWebToolsModalBtn');
+
+            const openSoftwaresBtn = document.getElementById('openSoftwaresBtn');
+            const softwaresModalOverlay = document.getElementById('softwaresModalOverlay');
+            const closeSoftwaresModalBtn = document.getElementById('closeSoftwaresModalBtn');
+
+            const closeEditModalBtn = document.getElementById('closeEditModalBtn'); // New close button for edit modal
+
+            // Key for local storage
+            const HEADING_STORAGE_KEY = 'marangattupillyGramapanchayatHeading';
+
+            // Generic function to show a modal
+            function showModal(modalOverlay) {
+                modalOverlay.classList.add('show');
+            }
+
+            // Generic function to hide a modal
+            function hideModal(modalOverlay) {
+                modalOverlay.classList.remove('show');
+            }
+
+            // Function to load heading from local storage
+            function loadHeading() {
+                const savedHeading = localStorage.getItem(HEADING_STORAGE_KEY);
+                if (savedHeading) {
+                    mainHeading.textContent = savedHeading;
+                } else {
+                    // Set default heading if not found in local storage
+                    mainHeading.textContent = 'GPTOOLS 3.0';
+                    saveHeading('GPTOOLS 3.0'); // Save the default heading to local storage
+                }
+            }
+
+            // Function to save heading to local storage
+            function saveHeading(text) {
+                localStorage.setItem(HEADING_STORAGE_KEY, text);
+            }
+
+            // Function to toggle visibility of "Change to your own homepage" link
+            function toggleHomepageLinkVisibility() {
+                if (mainHeading.textContent.trim() === 'GPTOOLS 3.0') {
+                    makeHomepageLink.style.display = ''; // Show the link (default display)
+                    makeHomepageLink.classList.add('blink-animation'); // Add blinking class
+                } else {
+                    makeHomepageLink.style.display = 'none'; // Hide the link
+                    makeHomepageLink.classList.remove('blink-animation'); // Remove blinking class
+                }
+            }
+
+            // Event listener for the edit heading button
+            editHeadingBtn.addEventListener('click', () => {
+                headingInput.value = mainHeading.textContent; // Pre-fill input with current heading
+                showModal(editModalOverlay);
+            });
+
+            // Event listener for the save button in the edit modal
+            saveEditBtn.addEventListener('click', () => {
+                const newHeading = headingInput.value.trim();
+                if (newHeading !== '') {
+                    mainHeading.textContent = newHeading;
+                    saveHeading(newHeading); // Save the new heading to local storage
+                }
+                hideModal(editModalOverlay);
+                toggleHomepageLinkVisibility(); // Update visibility and blinking after saving heading
+            });
+
+            // Event listener for the cancel button in the edit modal
+            cancelEditBtn.addEventListener('click', () => hideModal(editModalOverlay));
+
+            // Close edit modal if clicking outside the content
+            editModalOverlay.addEventListener('click', (event) => {
+                if (event.target === editModalOverlay) {
+                    hideModal(editModalOverlay);
+                }
+            });
+
+            // Close edit modal with new close button
+            closeEditModalBtn.addEventListener('click', () => hideModal(editModalOverlay));
+
+
+            // Event listeners for Web Tools button and modal
+            openWebToolsBtn.addEventListener('click', () => showModal(webToolsModalOverlay));
+            closeWebToolsModalBtn.addEventListener('click', () => hideModal(webToolsModalOverlay));
+            webToolsModalOverlay.addEventListener('click', (event) => {
+                if (event.target === webToolsModalOverlay) {
+                    hideModal(webToolsModalOverlay);
+                }
+            });
+
+            // Event listeners for Download Softwares button and modal
+            openSoftwaresBtn.addEventListener('click', () => showModal(softwaresModalOverlay));
+            closeSoftwaresModalBtn.addEventListener('click', () => hideModal(softwaresModalOverlay));
+            softwaresModalOverlay.addEventListener('click', (event) => {
+                if (event.target === softwaresModalOverlay) {
+                    hideModal(softwaresModalOverlay);
+                }
+            });
+
+            // Initial load functions
+            loadHeading();
+            toggleHomepageLinkVisibility(); // Initial check on page load and apply blinking if needed
+        });
+    </script>
+</body>
+</html>
