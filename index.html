@@ -122,18 +122,18 @@
 
         <!-- Custom Buttons Section (after search box) -->
         <div class="mb-12 flex flex-wrap justify-center gap-4">
-            <button class="px-6 py-2 bg-green-50 text-green-700 font-medium rounded hover:bg-green-100 transition-colors duration-150 text-base border border-green-100 shadow-sm">
+            <a href="/tools/servicetype.html" class="px-6 py-2 bg-green-50 text-green-700 font-medium rounded hover:bg-green-100 transition-colors duration-150 text-base border border-green-100 shadow-sm">
                 Service Type
-            </button>
-            <button class="px-6 py-2 bg-green-50 text-green-700 font-medium rounded hover:bg-green-100 transition-colors duration-150 text-base border border-green-100 shadow-sm">
+            </a>
+            <a href="/tools/mandatorydocuments.html" class="px-6 py-2 bg-green-50 text-green-700 font-medium rounded hover:bg-green-100 transition-colors duration-150 text-base border border-green-100 shadow-sm">
                 Mandatory Documents
-            </button>
-            <button class="px-6 py-2 bg-green-50 text-green-700 font-medium rounded hover:bg-green-100 transition-colors duration-150 text-base border border-green-100 shadow-sm">
+            </a>
+            <a href="/tools/accounthead.html" class="px-6 py-2 bg-green-50 text-green-700 font-medium rounded hover:bg-green-100 transition-colors duration-150 text-base border border-green-100 shadow-sm">
                 Account Heads
-            </button>
-            <button class="px-6 py-2 bg-green-50 text-green-700 font-medium rounded hover:bg-green-100 transition-colors duration-150 text-base border border-green-100 shadow-sm">
+            </a>
+            <a href="/tools/businessmaster.html" class="px-6 py-2 bg-green-50 text-green-700 font-medium rounded hover:bg-green-100 transition-colors duration-150 text-base border border-green-100 shadow-sm">
                 Business Master
-            </button>
+            </a>
         </div>
 
         <!-- Main Bookmarks Section (4 Columns) -->
@@ -268,59 +268,63 @@
             <div class="modal-content">
                 <button id="closeWebToolsModalBtn" class="absolute top-4 right-4 text-gray-600 hover:text-gray-900 text-2xl font-bold">&times;</button>
                 <h2 class="text-2xl font-bold text-gray-800 mb-4">Web Tools</h2>
-                <!-- Productivity Tools -->
-                <div class="mb-4">
-                    <h3 class="text-base font-semibold text-gray-700 mb-2">Productivity</h3>
+                <!-- Google Tools -->
+                <div class="mb-6">
+                    <h3 class="text-base font-semibold text-gray-700 mb-2">Google</h3>
                     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+                        <a href="https://www.google.com/" class="flex items-center p-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors duration-200" title="Google Search">
+                            <span class="text-sm text-gray-800">Google Search</span>
+                        </a>
+                        <a href="https://www.google.com/imghp" class="flex items-center p-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors duration-200" title="Image Search">
+                            <span class="text-sm text-gray-800">Image Search</span>
+                        </a>
+                        <a href="https://drive.google.com/" class="flex items-center p-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors duration-200" title="Google Drive">
+                            <span class="text-sm text-gray-800">Drive</span>
+                        </a>
                         <a href="https://keep.google.com/" class="flex items-center p-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors duration-200" title="Google Keep">
-                            <span class="text-sm text-gray-800">Google Keep</span>
+                            <span class="text-sm text-gray-800">Keep</span>
                         </a>
-                        <a href="https://todoist.com/" class="flex items-center p-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors duration-200" title="Todoist">
-                            <span class="text-sm text-gray-800">Todoist</span>
+                        <a href="https://tasks.google.com/" class="flex items-center p-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors duration-200" title="Google Tasks">
+                            <span class="text-sm text-gray-800">Tasks</span>
                         </a>
-                        <a href="https://evernote.com/" class="flex items-center p-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors duration-200" title="Evernote">
-                            <span class="text-sm text-gray-800">Evernote</span>
-                        </a>
-                        <a href="https://www.grammarly.com/" class="flex items-center p-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors duration-200" title="Grammarly">
-                            <span class="text-sm text-gray-800">Grammarly</span>
-                        </a>
-                        <a href="https://www.lastpass.com/" class="flex items-center p-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors duration-200" title="LastPass">
-                            <span class="text-sm text-gray-800">LastPass</span>
+                        <a href="https://calendar.google.com/" class="flex items-center p-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors duration-200" title="Google Calendar">
+                            <span class="text-sm text-gray-800">Calendar</span>
                         </a>
                     </div>
                 </div>
-
-                <!-- Development Tools -->
-                <div class="mb-4">
-                    <h3 class="text-base font-semibold text-gray-700 mb-2">Development</h3>
-                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
-                        <a href="https://codepen.io/" class="flex items-center p-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors duration-200" title="CodePen">
-                            <span class="text-sm text-gray-800">CodePen</span>
-                        </a>
-                        <a href="https://jsfiddle.net/" class="flex items-center p-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors duration-200" title="JSFiddle">
-                            <span class="text-sm text-gray-800">JSFiddle</span>
-                        </a>
-                        <a href="https://stackoverflow.com/" class="flex items-center p-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors duration-200" title="Stack Overflow">
-                            <span class="text-sm text-gray-800">Stack Overflow</span>
-                        </a>
-                        <a href="https://developer.mozilla.org/en-US/" class="flex items-center p-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors duration-200" title="MDN Web Docs">
-                            <span class="text-sm text-gray-800">MDN Web Docs</span>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Design Tools -->
+                <!-- AI Chatbots Category -->
                 <div>
-                    <h3 class="text-base font-semibold text-gray-700 mb-2">Design</h3>
+                    <h3 class="text-base font-semibold text-gray-700 mb-2">AI Chatbots</h3>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+                        <a href="https://gemini.google.com/" class="flex items-center p-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors duration-200" title="Gemini">
+                            <span class="text-sm text-gray-800">Gemini</span>
+                        </a>
+                        <a href="https://www.perplexity.ai/" class="flex items-center p-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors duration-200" title="Perplexity">
+                            <span class="text-sm text-gray-800">Perplexity</span>
+                        </a>
+                        <a href="https://chat.openai.com/" class="flex items-center p-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors duration-200" title="Chat GPT">
+                            <span class="text-sm text-gray-800">Chat GPT</span>
+                        </a>
+                        <a href="https://chat.deepseek.com/" class="flex items-center p-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors duration-200" title="Deepseek">
+                            <span class="text-sm text-gray-800">Deepseek</span>
+                        </a>
+                        <a href="https://aistudio.google.com/" class="flex items-center p-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors duration-200" title="AI Studio">
+                            <span class="text-sm text-gray-800">AI Studio</span>
+                        </a>
+                        <a href="https://copilot.microsoft.com/" class="flex items-center p-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors duration-200" title="Copilot">
+                            <span class="text-sm text-gray-800">Copilot</span>
+                        </a>
+                    </div>
+                </div>
+                <!-- Design Tools Category -->
+                <div class="mt-6">
+                    <h3 class="text-base font-semibold text-gray-700 mb-2">Design Tools</h3>
                     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
                         <a href="https://www.figma.com/" class="flex items-center p-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors duration-200" title="Figma">
                             <span class="text-sm text-gray-800">Figma</span>
                         </a>
                         <a href="https://www.canva.com/" class="flex items-center p-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors duration-200" title="Canva">
                             <span class="text-sm text-gray-800">Canva</span>
-                        </a>
-                        <a href="https://unsplash.com/" class="flex items-center p-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors duration-200" title="Unsplash">
-                            <span class="text-sm text-gray-800">Unsplash</span>
                         </a>
                     </div>
                 </div>
@@ -383,8 +387,29 @@
                         </a>
                     </div>
                 </div>
+                <!-- Browsers Category -->
+                <div class="mb-6">
+                    <h3 class="text-base font-semibold text-gray-700 mb-2">Browsers</h3>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+                        <a href="https://www.google.com/chrome/" class="flex items-center p-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors duration-200" title="Chrome">
+                            <span class="text-sm text-gray-800">Chrome</span>
+                        </a>
+                        <a href="https://www.mozilla.org/en-US/firefox/new/" class="flex items-center p-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors duration-200" title="Firefox">
+                            <span class="text-sm text-gray-800">Firefox</span>
+                        </a>
+                        <a href="https://brave.com/download/" class="flex items-center p-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors duration-200" title="Brave">
+                            <span class="text-sm text-gray-800">Brave</span>
+                        </a>
+                        <a href="https://www.opera.com/download" class="flex items-center p-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors duration-200" title="Opera">
+                            <span class="text-sm text-gray-800">Opera</span>
+                        </a>
+                        <a href="https://vivaldi.com/download/" class="flex items-center p-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors duration-200" title="Vivaldi">
+                            <span class="text-sm text-gray-800">Vivaldi</span>
+                        </a>
+                    </div>
+                </div>
                 <!-- Operating Systems Category -->
-                <div>
+                <div class="mb-6">
                     <h3 class="text-base font-semibold text-gray-700 mb-2">Operating Systems</h3>
                     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
                         <a href="https://www.microsoft.com/en-us/software-download/windows10" class="flex items-center p-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors duration-200" title="Windows 10">
@@ -404,6 +429,18 @@
                         </a>
                         <a href="https://www.bosslinux.in/downloads/" class="flex items-center p-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors duration-200" title="Boss Linux">
                             <span class="text-sm text-gray-800">Boss Linux</span>
+                        </a>
+                    </div>
+                </div>
+                <!-- Utilities Category -->
+                <div>
+                    <h3 class="text-base font-semibold text-gray-700 mb-2">Utilities</h3>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+                        <a href="https://www.7-zip.org/download.html" class="flex items-center p-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors duration-200" title="7-Zip">
+                            <span class="text-sm text-gray-800">7-Zip</span>
+                        </a>
+                        <a href="https://notepad-plus-plus.org/downloads/" class="flex items-center p-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors duration-200" title="Notepad++">
+                            <span class="text-sm text-gray-800">Notepad++</span>
                         </a>
                     </div>
                 </div>
